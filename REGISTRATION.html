@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Registration</title>
+    
+   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color:rgb(174, 177, 177);
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h1
+        {
+            text-align: center;
+            colour: back;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        input, select, textarea {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .qr-code {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .qr-code img {
+            width: 200px;
+        }
+        input[type="submit"] {
+            background-color:rgb(0, 8, 255);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            border: none;
+            position :center;
+        }
+        input[type="submit"]:hover {
+            background-color:rgb(0, 179, 176);
+        }
+        #receipt-preview {
+            display: none;
+            margin-top: 10px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+         <h1>
+            HACKATHON 2K25
+         </h1>
+
+         <div id="confirmationMessage" class="alert alert-success d-none"></div>
+
+        <h2>Event Registration</h2>
+        <form action="submit_registration.php" method="POST">
+            <!-- Personal Information Section -->
+            <div class="form-group">
+                <label for="name">Team Name:</label>
+                <input type="text" id="name" name="name" required placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label for="name">Group Leader:</label>
+                <input type="name" id="name" name="name" required placeholder="Enter your group leader name">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+            </div>
+            
+            <!-- Event Selection Section -->
+            <div class="form-group">
+                <label for="event">Select Domain:</label>
+                <select id="event" name="event" required>
+                    <option value="" disabled selected>Select a domain</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="AI/ML">AI/ML</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Gaming">Gaming</option>
+                </select>
+            </div>
+                 
+            <!--group members-->
+            <div class="form group">
+                <h3>*Group Members</h3>
+            <div>    
+                <label for="name">Member 1:</label><br>
+                <input type="name" id="name" name="name" required placeholder="Enter your member 1 name">
+            </div><br>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+            </div>
+            <div>    
+                <label for="name">Member 2:</label><br>
+                <input type="name" id="name" name="name" required placeholder="Enter your member 2 name">
+            </div><br>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+            </div>
+            <div>    
+                <label for="name">Member 3:</label><br>
+                <input type="name" id="name" name="name" required placeholder="Enter your member 3 name">
+            </div><br>
+            <div class="form-group">
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+            </div>
+            
+            <h3>*Payment</h3>
+            <!--Payment method-->
+            <div class="qr-code">
+                <h3> Scan The QR Code for Payment </h3>
+                <img src="C:\Users\Asus\OneDrive\Pictures\payment qr.jpg" height="250"></img>
+                <p class="text-muted small">Use any UPI app to scan and complete payment.</p>
+        </div>
+
+        <!-- Transaction ID Input -->
+        <div class="form-group">
+            <label for="transactionId"><b>Transaction ID</b> <span class="text-danger">*</span></label>
+            <input type="text" id="transactionId" class="form-control" placeholder="Enter UPI Transaction ID" required>
+        </div>
+       
+        </form>
+    </div>
+            <!-- Upload Payment Receipt -->
+            <div class="form-group">
+                <label for="paymentReceipt"><b>Upload Payment Receipt</b> <span class="text-danger">*</span></label>
+                <input type="file" id="paymentReceipt" class="form-control" name="receipt" accept="image/*,.pdf" required>
+                <p class="text-muted small">Upload a screenshot or PDF of the payment confirmation.</p>
+            </div>
+    
+            <!-- Preview Image (Optional) -->
+            <img id="receipt-preview" src="#" alt="Receipt Preview">
+    
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success w-100">Submit</button>
+        <br><br>
+        <div>
+            <input type="submit" value="submit"></input>
+        </div>
+        </form>
+    </div>
+    
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append("teamName", document.getElementById("teamName").value);
+            formData.append("leaderName", document.getElementById("leaderName").value);
+            formData.append("leaderPhone", document.getElementById("leaderPhone").value);
+            formData.append("domain", document.getElementById("domain").value);
+            
+            const members = [
+                { name: document.getElementById("member1").value, phone: document.getElementById("phone1").value },
+                { name: document.getElementById("member2").value, phone: document.getElementById("phone2").value }
+            ];
+            formData.append("members", JSON.stringify(members));
+
+            formData.append("transactionId", document.getElementById("transactionId").value);
+            formData.append("receipt", document.getElementById("receipt").files[0]);
+
+            const response = await fetch("http://localhost:5000/register", {
+                method: "POST",
+                body: formData
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                // Show confirmation message
+                document.getElementById("confirmationMessage").classList.remove("d-none");
+                document.getElementById("confirmationMessage").textContent = "✅ Registration Successful! Redirecting...";
+                
+                // Clear form fields
+                document.getElementById("registrationForm").reset();
+
+                // Redirect after 3 seconds
+                setTimeout(() => {
+                    window.location.href = "confirmation.html"; // Redirect to a thank-you page
+                }, 3000);
+            } else {
+                alert("❌ Registration Failed. Please try again!");
+            }
+        });
+    </script>
+    
+    
+    
+</body>
+</html>
